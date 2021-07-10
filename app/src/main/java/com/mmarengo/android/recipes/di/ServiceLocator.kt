@@ -5,6 +5,7 @@ import com.mmarengo.android.recipes.data.RecipesRepository
 import com.mmarengo.android.recipes.data.RecipesRepositoryDefault
 import com.mmarengo.android.recipes.data.network.RecipesApiManager
 import com.mmarengo.android.recipes.data.network.RetrofitApiClient
+import kotlinx.coroutines.Dispatchers
 
 object ServiceLocator {
 
@@ -23,7 +24,7 @@ object ServiceLocator {
             loggingEnabled = BuildConfig.DEBUG
         )
         val recipesApiManager = RecipesApiManager(retrofitApiClient)
-        val newRecipesRepository = RecipesRepositoryDefault(recipesApiManager)
+        val newRecipesRepository = RecipesRepositoryDefault(recipesApiManager, Dispatchers.Default)
         recipesRepository = newRecipesRepository
         return newRecipesRepository
     }

@@ -38,7 +38,7 @@ class RetrofitApiClient(
 
         if (loggingEnabled) {
             val loggingInterceptor = HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
+                level = HttpLoggingInterceptor.Level.BASIC
             }
             httpClientBuilder.interceptors().add(loggingInterceptor)
             httpClientBuilder.addNetworkInterceptor(StethoInterceptor())

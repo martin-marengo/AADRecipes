@@ -42,7 +42,7 @@ class HomeViewModel(
         currentSearchJob = viewModelScope.launch {
             recipesRepository.searchMeals(query).collect { response ->
                 when (response) {
-                    is Response.Loading -> { }
+                    is Response.InProgress -> { }
                     is Response.Success -> {
                         _loading.value = false
                         response.data.let {
