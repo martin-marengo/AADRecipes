@@ -1,0 +1,92 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id "androidx.navigation.safeargs.kotlin"
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.mmarengo.android.recipes"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled = true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            debuggable = false
+            minifyEnabled true
+            shrinkResources = true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "RECIPES_BASE_URL", "\"https://www.themealdb.com/api/json/\""
+        }
+        debug {
+            debuggable = true
+            minifyEnabled false
+            shrinkResources = false
+
+            buildConfigField "String", "RECIPES_BASE_URL", "\"https://www.themealdb.com/api/json/\""
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation "androidx.appcompat:appcompat:$app_compat_version"
+    implementation "com.google.android.material:material:$material_version"
+    implementation "androidx.multidex:multidex:$multidex_version"
+
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    // LiveData
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+
+    // Navigation
+    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+
+    // Moshi
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_logging_version"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
+    // Stetho
+    implementation "com.facebook.stetho:stetho:$stetho_version"
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
+    // LeakCanary
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+
+    // Testing
+    testImplementation "junit:junit:$junit_version"
+    // Android Testing
+    androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+}
