@@ -1,15 +1,17 @@
 package com.mmarengo.android.recipes.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mmarengo.android.recipes.R
 import com.mmarengo.android.recipes.databinding.FragmentHomeBinding
 import com.mmarengo.android.recipes.di.ServiceLocator
@@ -35,16 +37,33 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-        viewModel.loading.observe(viewLifecycleOwner) {
-            Log.d("HOME_LOADING", it.toString())
-        }
-
-        viewModel.mealsResult.observe(viewLifecycleOwner) {
-            Log.d("HOME_MEALS", it.size.toString())
-        }
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val layoutManager = LinearLayoutManager(requireActivity())
+        val adapter = RecipesAdapter()
+
+        with(binding.recyclerviewRecipes) {
+            this.layoutManager = layoutManager
+            this.adapter = adapter
+
+            val dividerItemDecoration = DividerItemDecoration(
+                this.context,
+                layoutManager.orientation
+            )
+            addItemDecoration(dividerItemDecoration)
+        }
+
+        viewModel.inProgress.observe(viewLifecycleOwner) { inProgress ->
+            binding.progress.isVisible = inProgress
+        }
+
+        viewModel.mealsResult.observe(viewLifecycleOwner) { recipeList ->
+            adapter.submitList(recipeList)
+        }
     }
 
     override fun onDestroyView() {

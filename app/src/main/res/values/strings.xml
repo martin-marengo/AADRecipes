@@ -6,4 +6,5 @@
     <string name="recipes_categories_title">Meal categories</string>
     <string name="home_search_meals_title">Search recipes…</string>
     <string name="home_fragment_temp">Juan <b>Carlos</b> Bold.</string>
+    <string name="recipe_thumbnail_content_desc">Recipe thumbnail</string>
 </resources>

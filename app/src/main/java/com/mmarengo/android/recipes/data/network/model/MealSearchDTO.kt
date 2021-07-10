@@ -1,6 +1,6 @@
 package com.mmarengo.android.recipes.data.network.model
 
-import com.mmarengo.android.recipes.model.Meal
+import com.mmarengo.android.recipes.model.Recipe
 import com.squareup.moshi.Json
 
 data class MealSearchDTO(
@@ -9,7 +9,7 @@ data class MealSearchDTO(
     @Json(name = "strCategory") val category: String,
     @Json(name = "strMealThumb") val thumbUrl: String?
 ) {
-    fun toModel() : Meal = Meal(
+    fun toModel() : Recipe = Recipe(
         id = id, name = name, category = category, thumbUrl = thumbUrl
     )
 }

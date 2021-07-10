@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.mmarengo.android.recipes.data.RecipesRepository
 import com.mmarengo.android.recipes.data.Response
-import com.mmarengo.android.recipes.model.Meal
+import com.mmarengo.android.recipes.model.Recipe
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -17,11 +17,11 @@ class HomeViewModel(
     private val recipesRepository: RecipesRepository
 ) : ViewModel() {
 
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean> = _loading
+    private val _inProgress = MutableLiveData<Boolean>()
+    val inProgress: LiveData<Boolean> = _inProgress
 
-    private val _mealsResult = MutableLiveData<List<Meal>>()
-    val mealsResult: LiveData<List<Meal>> = _mealsResult
+    private val _mealsResult = MutableLiveData<List<Recipe>>()
+    val mealsResult: LiveData<List<Recipe>> = _mealsResult
 
     private val _currentQuery = MutableLiveData<String>()
     val currentQuery: LiveData<String> = _currentQuery
@@ -32,7 +32,7 @@ class HomeViewModel(
     fun search(query: String) {
         if (query.isNotBlank() && query != _currentQuery.value) {
             _currentQuery.value = query
-            _loading.value = true
+            _inProgress.value = true
             cancelCurrentSearch()
             timer.start()
         }
@@ -44,13 +44,13 @@ class HomeViewModel(
                 when (response) {
                     is Response.InProgress -> { }
                     is Response.Success -> {
-                        _loading.value = false
+                        _inProgress.value = false
                         response.data.let {
                             _mealsResult.value = it
                         }
                     }
                     is Response.Error -> {
-                        _loading.value = false
+                        _inProgress.value = false
                         _mealsResult.value = listOf()
                     }
                 }

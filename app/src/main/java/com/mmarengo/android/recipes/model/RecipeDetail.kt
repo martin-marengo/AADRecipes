@@ -1,6 +1,6 @@
 package com.mmarengo.android.recipes.model
 
-data class MealDetail(
+data class RecipeDetail(
     val id: Long,
     val name: String,
     val category: String,

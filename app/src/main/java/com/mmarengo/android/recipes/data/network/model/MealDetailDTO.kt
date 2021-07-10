@@ -1,7 +1,7 @@
 package com.mmarengo.android.recipes.data.network.model
 
 import com.mmarengo.android.recipes.model.Ingredient
-import com.mmarengo.android.recipes.model.MealDetail
+import com.mmarengo.android.recipes.model.RecipeDetail
 import com.squareup.moshi.Json
 
 data class MealDetailDTO(
@@ -53,7 +53,7 @@ data class MealDetailDTO(
     @Json(name = "strMeasure20") val measure20: String?,
 ) {
 
-    fun toModel(): MealDetail {
+    fun toModel(): RecipeDetail {
         val ingredients = mutableListOf<Ingredient>()
         if (!ingredient1.isNullOrBlank()) {
             ingredients.add(Ingredient(ingredient1, measure1))
@@ -116,7 +116,7 @@ data class MealDetailDTO(
             ingredients.add(Ingredient(ingredient20, measure20))
         }
 
-        return MealDetail(
+        return RecipeDetail(
             id = id,
             name = name,
             category = category,
