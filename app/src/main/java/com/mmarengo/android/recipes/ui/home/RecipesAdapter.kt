@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.mmarengo.android.recipes.databinding.ItemRecipeBinding
 import com.mmarengo.android.recipes.model.Recipe
+import com.mmarengo.android.recipes.ui.loadImageFromUrl
 
 class RecipesAdapter : ListAdapter<Recipe, RecipesAdapter.RecipeViewHolder>(RecipeDiffCallback()) {
 
@@ -25,11 +25,7 @@ class RecipesAdapter : ListAdapter<Recipe, RecipesAdapter.RecipeViewHolder>(Reci
 
         fun bind(recipe: Recipe) {
             with(binding) {
-                //imageviewRecipeThumbnail.loadImageFromUrl(recipe.thumbUrl ?: "")
-                Glide
-                    .with(imageviewRecipeThumbnail.context)
-                    .load(recipe.thumbUrl ?: "")
-                    .into(imageviewRecipeThumbnail)
+                imageviewRecipeThumbnail.loadImageFromUrl(recipe.thumbUrl ?: "")
                 textviewRecipeName.text = recipe.name
                 textviewRecipeCategory.text = recipe.category
             }

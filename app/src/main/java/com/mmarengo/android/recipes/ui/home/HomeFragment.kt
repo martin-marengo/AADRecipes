@@ -10,7 +10,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mmarengo.android.recipes.R
 import com.mmarengo.android.recipes.databinding.FragmentHomeBinding
@@ -49,12 +48,6 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
         with(binding.recyclerviewRecipes) {
             this.layoutManager = layoutManager
             this.adapter = adapter
-
-            val dividerItemDecoration = DividerItemDecoration(
-                this.context,
-                layoutManager.orientation
-            )
-            addItemDecoration(dividerItemDecoration)
         }
 
         viewModel.inProgress.observe(viewLifecycleOwner) { inProgress ->
