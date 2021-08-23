@@ -10,11 +10,10 @@ import com.mmarengo.android.recipes.data.RecipesRepository
 import com.mmarengo.android.recipes.data.Response
 import com.mmarengo.android.recipes.model.Recipe
 import com.mmarengo.android.recipes.model.RecipeDetail
+import com.mmarengo.android.recipes.ui.initCountDown
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -25,8 +24,7 @@ class HomeViewModel(
 
     companion object {
         private const val TYPING_DELAY_MS: Long = 500L
-        private val RANDOM_TIMER_PROGRESSION: IntProgression = 9 downTo 0
-        private const val ONE_SECOND_MS: Long = 1_000L
+        private const val RANDOM_TIMER_DELAY_SEC: Int = 10
     }
 
     private val _inProgress = MutableLiveData<Boolean>()
@@ -45,7 +43,7 @@ class HomeViewModel(
     val randomRecipe: LiveData<RecipeDetail> get() = _randomRecipe
 
     private var currentSearchJob: Job? = null
-    private val timer = SearchTimer()
+    private val searchTimer = SearchTimer()
     private val emptyRecipesList: List<Recipe> by lazy { listOf() }
 
     init {
@@ -63,7 +61,7 @@ class HomeViewModel(
                 _inProgress.value = false
                 _noRecipesViewsVisible.value = true
             } else {
-                timer.start()
+                searchTimer.start()
                 _inProgress.value = true
                 _noRecipesViewsVisible.value = false
             }
@@ -94,15 +92,11 @@ class HomeViewModel(
         }
     }
 
-    // TODO: make reusable
     private fun initRandomRecipeTimer() {
-        viewModelScope.launch {
-            RANDOM_TIMER_PROGRESSION.asFlow()
-                .onEach { delay(ONE_SECOND_MS) }
-                .onCompletion { searchRandomRecipe() }
-                .conflate()
-                .collect { }
-        }
+        initCountDown(RANDOM_TIMER_DELAY_SEC)
+            .onCompletion { searchRandomRecipe() }
+            .onEach { }
+            .launchIn(viewModelScope)
     }
 
     private fun executeSearch(query: String) {
@@ -129,10 +123,9 @@ class HomeViewModel(
 
     private fun cancelCurrentSearch() {
         currentSearchJob?.cancel()
-        timer.cancel()
+        searchTimer.cancel()
     }
 
-    // TODO: maybe migrate to Flow implementation.
     private inner class SearchTimer : CountDownTimer(TYPING_DELAY_MS, TYPING_DELAY_MS) {
         override fun onTick(millisUntilFinished: Long) {
             //no-op
