@@ -8,7 +8,7 @@
     <fragment
         android:id="@id/home_fragment"
         android:name="com.mmarengo.android.recipes.ui.home.HomeFragment"
-        android:label="@string/recipes_home_title"
+        android:label="@string/home_title"
         tools:layout="@layout/fragment_home"/>
 
     <fragment

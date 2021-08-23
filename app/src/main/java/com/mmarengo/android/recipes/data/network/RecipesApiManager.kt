@@ -1,7 +1,7 @@
 package com.mmarengo.android.recipes.data.network
 
-import com.mmarengo.android.recipes.data.network.model.LookupMealResponse
-import com.mmarengo.android.recipes.data.network.model.SearchMealsResponse
+import com.mmarengo.android.recipes.data.network.model.LookUpRecipeResponse
+import com.mmarengo.android.recipes.data.network.model.SearchRecipesResponse
 
 class RecipesApiManager(
     retrofitApiClient: RetrofitApiClient
@@ -9,9 +9,11 @@ class RecipesApiManager(
 
     private val recipesApi = retrofitApiClient.createService(RecipesApi::class.java)
 
-    suspend fun searchMeals(query: String): SearchMealsResponse =
-        recipesApi.searchMeals(query)
+    suspend fun searchRecipes(query: String): SearchRecipesResponse =
+        recipesApi.searchRecipes(query)
 
-    suspend fun lookUpMeal(mealId: Long): LookupMealResponse =
-        recipesApi.lookupMeal(mealId)
+    suspend fun lookUpRecipe(mealId: Long): LookUpRecipeResponse =
+        recipesApi.lookUpRecipe(mealId)
+
+    suspend fun lookUpRandomRecipe(): LookUpRecipeResponse = recipesApi.lookUpRandomRecipe()
 }

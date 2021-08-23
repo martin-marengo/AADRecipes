@@ -17,4 +17,14 @@
     <style name="Theme.Recipes.Splash" parent="Theme.Recipes">
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
+
+    <style name="HeadlineSmallCustom" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:textSize">@dimen/HeadlineSmallCustomSize</item>
+    </style>
+
+    <style name="CardViewRandomRecipe">
+        <item name="cardBackgroundColor">?attr/colorSecondary</item>
+        <item name="cardCornerRadius">@dimen/home_card_corner_radius</item>
+        <item name="cardElevation">@dimen/home_card_elevation</item>
+    </style>
 </resources>

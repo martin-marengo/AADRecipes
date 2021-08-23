@@ -25,7 +25,7 @@ class RecipesAdapter : ListAdapter<Recipe, RecipesAdapter.RecipeViewHolder>(Reci
 
         fun bind(recipe: Recipe) {
             with(binding) {
-                imageviewRecipeThumbnail.loadImageFromUrl(recipe.thumbUrl ?: "")
+                imageviewRecipeThumbnail.loadImageFromUrl(recipe.thumbUrl.orEmpty())
                 textviewRecipeName.text = recipe.name
                 textviewRecipeCategory.text = recipe.category
             }

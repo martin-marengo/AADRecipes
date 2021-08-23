@@ -2,33 +2,34 @@ package com.mmarengo.android.recipes.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mmarengo.android.recipes.R
 import com.mmarengo.android.recipes.databinding.FragmentHomeBinding
 import com.mmarengo.android.recipes.di.ServiceLocator
+import com.mmarengo.android.recipes.ui.loadImageFromUrl
 
 class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
+
+    companion object {
+        const val EMPTY_SEARCH = ""
+    }
 
     private var _binding: FragmentHomeBinding? = null
     // onCreateView - onDestroyView
     private val binding get() = _binding!!
 
-    private val viewModel: HomeViewModel by viewModels {
+    private val viewModel: HomeViewModel by activityViewModels {
         HomeViewModel.HomeViewModelFactory(ServiceLocator.provideRecipesRepository())
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+    private lateinit var recipesAdater: RecipesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,20 +43,23 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val layoutManager = LinearLayoutManager(requireActivity())
-        val adapter = RecipesAdapter()
+        setUpSearchView()
+        setUpRecipesList()
+        setObservers()
+    }
 
-        with(binding.recyclerviewRecipes) {
-            this.layoutManager = layoutManager
-            this.adapter = adapter
-        }
+    private fun setUpSearchView() {
+        binding.homeSearchviewRecipes.let {
+            it.setIconifiedByDefault(false)
+            it.setOnQueryTextListener(this)
+            it.queryHint = getString(R.string.home_search_meals_title)
+            it.imeOptions = EditorInfo.IME_ACTION_NONE
 
-        viewModel.inProgress.observe(viewLifecycleOwner) { inProgress ->
-            binding.progress.isVisible = inProgress
-        }
-
-        viewModel.mealsResult.observe(viewLifecycleOwner) { recipeList ->
-            adapter.submitList(recipeList)
+            if (!viewModel.currentQuery.value.isNullOrBlank()) {
+                it.post {
+                    it.setQuery(viewModel.currentQuery.value, true)
+                }
+            }
         }
     }
 
@@ -64,28 +68,50 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
         _binding = null
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.home_search_menu, menu)
-        val searchItem = menu.findItem(R.id.meals_search)
-        val searchView = searchItem.actionView as SearchView
-
-        searchView.setOnQueryTextListener(this)
-        searchView.queryHint = getString(R.string.home_search_meals_title)
-
-        //searchView.setQuery(viewModel.currentQuery.value)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
     //region SearchView.OnQueryTextListener
     override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
+        return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        if (newText != null) {
-            viewModel.search(newText)
-        }
+        viewModel.search(newText ?: EMPTY_SEARCH)
         return true
     }
     //endregion
+
+    private fun setUpRecipesList() {
+        val layoutManager = LinearLayoutManager(requireActivity())
+        recipesAdater = RecipesAdapter()
+
+        with(binding.homeRecyclerviewRecipes) {
+            this.layoutManager = layoutManager
+            this.adapter = recipesAdater
+        }
+    }
+
+    private fun setObservers() {
+        viewModel.run {
+            inProgress.observe(viewLifecycleOwner) { inProgress ->
+                binding.homeProgressBar.isVisible = inProgress
+            }
+
+            mealsResult.observe(viewLifecycleOwner) { recipeList ->
+                recipesAdater.submitList(recipeList)
+            }
+
+            noRecipesViewsVisible.observe(viewLifecycleOwner) { visible ->
+                binding.homeImageviewNoRecipes.isVisible = visible
+                binding.homeTextviewNoRecipes.isVisible = visible
+            }
+
+            randomRecipe.observe(viewLifecycleOwner) { recipeDetail ->
+                binding.run {
+                    homeImageviewRecipeThumbnail.loadImageFromUrl(recipeDetail.thumbUrl.orEmpty())
+                    homeTextviewRecipeName.text = recipeDetail.name
+                    homeTextviewRecipeCategory.text = recipeDetail.category
+                    homeCardRandomRecipe.isVisible = true
+                }
+            }
+        }
+    }
 }

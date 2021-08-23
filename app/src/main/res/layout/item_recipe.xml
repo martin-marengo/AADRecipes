@@ -7,11 +7,12 @@
 
     <ImageView
         android:id="@+id/imageview_recipe_thumbnail"
-        android:layout_width="@dimen/list_thumbnail_width"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/list_thumbnail_size"
+        android:layout_height="@dimen/list_thumbnail_size"
+        android:scaleType="centerCrop"
         android:layout_marginTop="@dimen/spacing_16"
         android:layout_marginBottom="@dimen/spacing_16"
-        android:contentDescription="@string/recipe_thumbnail_content_desc"
+        android:contentDescription="@string/home_recipe_list_thumbnail_cdesc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

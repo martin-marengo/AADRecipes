@@ -45,12 +45,8 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
-    dataBinding {
-        enabled = true
-    }
-
     buildFeatures {
-        viewBinding = true
+        viewBinding true
     }
 }
 
@@ -71,11 +67,11 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
-    // Moshi
+    // Moshi // TODO: replace by KotlinX Serialization
     implementation "com.squareup.moshi:moshi:$moshi_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
 
-    // Retrofit
+    // Retrofit // TODO: try Ktor
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_logging_version"

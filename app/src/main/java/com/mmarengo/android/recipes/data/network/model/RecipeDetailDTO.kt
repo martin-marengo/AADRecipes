@@ -4,7 +4,7 @@ import com.mmarengo.android.recipes.model.Ingredient
 import com.mmarengo.android.recipes.model.RecipeDetail
 import com.squareup.moshi.Json
 
-data class MealDetailDTO(
+data class RecipeDetailDTO(
     @Json(name = "idMeal") val id: Long,
     @Json(name = "strMeal") val name: String,
     @Json(name = "strCategory") val category: String,

@@ -13,16 +13,14 @@ class RetrofitApiClient(
     loggingEnabled: Boolean
 ) {
 
-    companion object {
-        val moshiKotlin: Moshi = Moshi.Builder()
+    private val moshiKotlin: Moshi by lazy {
+        Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
     }
 
-    private val retrofit: Retrofit
-
-    init {
-        retrofit = Retrofit.Builder()
+    private val retrofit: Retrofit by lazy {
+        Retrofit.Builder()
             .client(createHttpClient(loggingEnabled))
             .baseUrl(baseUrl)
             .addConverterFactory(MoshiConverterFactory.create(moshiKotlin))
@@ -38,7 +36,7 @@ class RetrofitApiClient(
 
         if (loggingEnabled) {
             val loggingInterceptor = HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BASIC
+                level = HttpLoggingInterceptor.Level.BODY
             }
             httpClientBuilder.interceptors().add(loggingInterceptor)
             httpClientBuilder.addNetworkInterceptor(StethoInterceptor())

@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface RecipesRepository {
 
-    suspend fun searchMeals(query: String): Flow<Response<List<Recipe>>>
+    suspend fun searchRecipes(query: String): Flow<Response<List<Recipe>>>
 
-    suspend fun lookupMeal(mealId: Long): Flow<Response<RecipeDetail>>
+    suspend fun lookUpRecipe(mealId: Long): Flow<Response<RecipeDetail>>
+
+    suspend fun lookUpRandomRecipe(): Flow<Response<RecipeDetail>>
 }

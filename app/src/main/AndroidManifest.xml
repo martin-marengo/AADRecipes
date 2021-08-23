@@ -15,7 +15,8 @@
 
         <activity
             android:name=".ui.MainActivity"
-            android:theme="@style/Theme.Recipes.Splash">
+            android:theme="@style/Theme.Recipes.Splash"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

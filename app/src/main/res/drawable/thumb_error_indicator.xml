@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/grey_100" />
+        </shape>
+    </item>
+    <item
+        android:right="@dimen/list_thumbnail_error_padding"
+        android:left="@dimen/list_thumbnail_error_padding"
+        android:top="@dimen/list_thumbnail_error_padding"
+        android:bottom="@dimen/list_thumbnail_error_padding"
+        android:drawable="@drawable/ic_image_not_supported_72" />
+</layer-list>
