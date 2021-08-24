@@ -139,7 +139,7 @@ class HomeViewModel(
     }
 
     @Suppress("UNCHECKED_CAST")
-    class HomeViewModelFactory(
+    class Factory(
         private val recipesRepository: RecipesRepository
     ) : ViewModelProvider.NewInstanceFactory() {
 

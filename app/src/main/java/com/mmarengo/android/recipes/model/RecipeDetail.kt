@@ -1,5 +1,9 @@
 package com.mmarengo.android.recipes.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class RecipeDetail(
     val id: Long,
     val name: String,
@@ -8,4 +12,4 @@ data class RecipeDetail(
     val thumbUrl: String?,
     val youtubeUrl: String?,
     val ingredients: List<Ingredient>
-)
+) : Parcelable

@@ -11,4 +11,6 @@
     <string name="home_recipe_list_thumbnail_cdesc">Recipe thumbnail</string>
 
     <string name="recipes_categories_title">Meal categories</string>
+
+    <string name="detail_title">Recipe detail</string>
 </resources>

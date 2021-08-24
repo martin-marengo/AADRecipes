@@ -12,8 +12,8 @@ class RecipesApiManager(
     suspend fun searchRecipes(query: String): SearchRecipesResponse =
         recipesApi.searchRecipes(query)
 
-    suspend fun lookUpRecipe(mealId: Long): LookUpRecipeResponse =
-        recipesApi.lookUpRecipe(mealId)
+    suspend fun lookUpRecipe(recipeId: Long): LookUpRecipeResponse =
+        recipesApi.lookUpRecipe(recipeId)
 
     suspend fun lookUpRandomRecipe(): LookUpRecipeResponse = recipesApi.lookUpRandomRecipe()
 }
