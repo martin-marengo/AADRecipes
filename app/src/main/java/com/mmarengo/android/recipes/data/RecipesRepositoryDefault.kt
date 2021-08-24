@@ -33,12 +33,12 @@ class RecipesRepositoryDefault(
             }
         }
 
-    override suspend fun lookUpRecipe(mealId: Long): Flow<Response<RecipeDetail>> =
+    override suspend fun lookUpRecipe(recipeId: Long): Flow<Response<RecipeDetail>> =
         withContext(dispatcher) {
             flow {
                 emit(Response.InProgress)
 
-                val response: LookUpRecipeResponse = recipesApiManager.lookUpRecipe(mealId)
+                val response: LookUpRecipeResponse = recipesApiManager.lookUpRecipe(recipeId)
                 val recipeDetail: RecipeDetail = response.recipes.first().toModel()
                 emit(Response.Success(recipeDetail))
 

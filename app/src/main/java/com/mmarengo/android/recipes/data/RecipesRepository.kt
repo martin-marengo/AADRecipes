@@ -8,7 +8,7 @@ interface RecipesRepository {
 
     suspend fun searchRecipes(query: String): Flow<Response<List<Recipe>>>
 
-    suspend fun lookUpRecipe(mealId: Long): Flow<Response<RecipeDetail>>
+    suspend fun lookUpRecipe(recipeId: Long): Flow<Response<RecipeDetail>>
 
     suspend fun lookUpRandomRecipe(): Flow<Response<RecipeDetail>>
 }

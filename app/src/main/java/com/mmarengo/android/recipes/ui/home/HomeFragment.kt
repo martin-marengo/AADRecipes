@@ -6,14 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mmarengo.android.recipes.R
 import com.mmarengo.android.recipes.databinding.FragmentHomeBinding
 import com.mmarengo.android.recipes.di.ServiceLocator
 import com.mmarengo.android.recipes.ui.loadImageFromUrl
+import com.mmarengo.android.recipes.ui.mainAppBarConfiguration
 
 class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
 
@@ -25,11 +29,11 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     // onCreateView - onDestroyView
     private val binding get() = _binding!!
 
-    private val viewModel: HomeViewModel by activityViewModels {
-        HomeViewModel.HomeViewModelFactory(ServiceLocator.provideRecipesRepository())
+    private val viewModel: HomeViewModel by viewModels {
+        HomeViewModel.Factory(ServiceLocator.provideRecipesRepository())
     }
 
-    private lateinit var recipesAdater: RecipesAdapter
+    private var recipesAdater: RecipesAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +46,14 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val toolbar: Toolbar = binding.homeAppBar.root
+        NavigationUI.setupWithNavController(
+            toolbar,
+            findNavController(),
+            mainAppBarConfiguration
+        )
+        toolbar.title = getString(R.string.home_title)
 
         setUpSearchView()
         setUpRecipesList()
@@ -66,6 +78,7 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        recipesAdater = null
     }
 
     //region SearchView.OnQueryTextListener
@@ -96,7 +109,7 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
             }
 
             mealsResult.observe(viewLifecycleOwner) { recipeList ->
-                recipesAdater.submitList(recipeList)
+                recipesAdater?.submitList(recipeList)
             }
 
             noRecipesViewsVisible.observe(viewLifecycleOwner) { visible ->
@@ -110,6 +123,10 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
                     homeTextviewRecipeName.text = recipeDetail.name
                     homeTextviewRecipeCategory.text = recipeDetail.category
                     homeCardRandomRecipe.isVisible = true
+
+                    homeCardRandomRecipe.setOnClickListener {
+
+                    }
                 }
             }
         }
