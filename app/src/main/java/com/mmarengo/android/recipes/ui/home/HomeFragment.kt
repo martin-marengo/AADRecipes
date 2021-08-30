@@ -1,21 +1,24 @@
 package com.mmarengo.android.recipes.ui.home
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
+import android.transition.Explode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mmarengo.android.recipes.R
 import com.mmarengo.android.recipes.databinding.FragmentHomeBinding
 import com.mmarengo.android.recipes.di.ServiceLocator
+import com.mmarengo.android.recipes.ui.TestActivity
 import com.mmarengo.android.recipes.ui.loadImageFromUrl
 import com.mmarengo.android.recipes.ui.mainAppBarConfiguration
 
@@ -29,7 +32,7 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     // onCreateView - onDestroyView
     private val binding get() = _binding!!
 
-    private val viewModel: HomeViewModel by viewModels {
+    private val viewModel: HomeViewModel by activityViewModels {
         HomeViewModel.Factory(ServiceLocator.provideRecipesRepository())
     }
 
@@ -47,13 +50,9 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val toolbar: Toolbar = binding.homeAppBar.root
-        NavigationUI.setupWithNavController(
-            toolbar,
-            findNavController(),
-            mainAppBarConfiguration
+        binding.homeAppBar.root.setupWithNavController(
+            findNavController(), mainAppBarConfiguration
         )
-        toolbar.title = getString(R.string.home_title)
 
         setUpSearchView()
         setUpRecipesList()
@@ -125,7 +124,16 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
                     homeCardRandomRecipe.isVisible = true
 
                     homeCardRandomRecipe.setOnClickListener {
+                        /*val action = HomeFragmentDirections.actionHomeFragmentToRecipeDetailFragment(
+                            recipeDetail.id, recipeDetail
+                        )
+                        findNavController().navigate(action)*/
 
+                        val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity())
+                        val intent = Intent(requireActivity(), TestActivity::class.java)
+
+                        requireActivity().window.exitTransition = Explode()
+                        requireActivity().startActivity(intent, options.toBundle())
                     }
                 }
             }

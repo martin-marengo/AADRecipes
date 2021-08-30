@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
-import com.mmarengo.android.recipes.R
+import androidx.navigation.ui.setupWithNavController
 import com.mmarengo.android.recipes.databinding.FragmentCategoriesBinding
 import com.mmarengo.android.recipes.ui.mainAppBarConfiguration
 
@@ -22,7 +20,7 @@ class CategoriesFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCategoriesBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -31,15 +29,9 @@ class CategoriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val toolbar: Toolbar = binding.categoriesAppBar.root
-
-        NavigationUI.setupWithNavController(
-            toolbar,
-            findNavController(),
-            mainAppBarConfiguration
+        binding.categoriesAppBar.root.setupWithNavController(
+            findNavController(), mainAppBarConfiguration
         )
-
-        toolbar.title = getString(R.string.recipes_categories_title)
     }
 
     override fun onDestroyView() {

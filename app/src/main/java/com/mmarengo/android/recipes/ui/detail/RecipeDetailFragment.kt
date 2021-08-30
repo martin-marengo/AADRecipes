@@ -9,10 +9,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
-import com.mmarengo.android.recipes.R
 import com.mmarengo.android.recipes.databinding.FragmentRecipeDetailBinding
 import com.mmarengo.android.recipes.di.ServiceLocator
+import com.mmarengo.android.recipes.model.RecipeDetail
 import com.mmarengo.android.recipes.ui.mainAppBarConfiguration
 
 class RecipeDetailFragment : Fragment() {
@@ -25,7 +26,7 @@ class RecipeDetailFragment : Fragment() {
         RecipeDetailViewModel.Factory(ServiceLocator.provideRecipesRepository())
     }
 
-    //private val args: RecipeDetailFragmentArgs by navArgs()
+    private val args: RecipeDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,14 +46,13 @@ class RecipeDetailFragment : Fragment() {
             findNavController(),
             mainAppBarConfiguration
         )
-        toolbar.title = getString(R.string.detail_title)
 
-        /*val recipeDetail: RecipeDetail? = args.recipeDetail
+        val recipeDetail: RecipeDetail? = args.recipeDetail
         if (recipeDetail != null) {
             viewModel.setRecipeDetail(recipeDetail)
         } else {
             viewModel.setRecipeId(args.recipeId)
-        }*/
+        }
 
         addObservers()
     }
