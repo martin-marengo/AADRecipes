@@ -3,7 +3,6 @@ package com.mmarengo.android.recipes.ui.home
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.transition.Explode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,6 +54,11 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
         )
 
         setUpSearchView()
+
+        binding.homeSwiperefreshRecipes.setOnRefreshListener {
+            viewModel.runSurpriseQuery()
+        }
+
         setUpRecipesList()
         setObservers()
     }
@@ -105,9 +109,11 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
         viewModel.run {
             inProgress.observe(viewLifecycleOwner) { inProgress ->
                 binding.homeProgressBar.isVisible = inProgress
+                binding.homeSwiperefreshRecipes.isEnabled = !inProgress
             }
 
             mealsResult.observe(viewLifecycleOwner) { recipeList ->
+                binding.homeSwiperefreshRecipes.isRefreshing = false
                 recipesAdater?.submitList(recipeList)
             }
 
@@ -132,7 +138,7 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
                         val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity())
                         val intent = Intent(requireActivity(), TestActivity::class.java)
 
-                        requireActivity().window.exitTransition = Explode()
+                        //requireActivity().window.exitTransition = Explode()
                         requireActivity().startActivity(intent, options.toBundle())
                     }
                 }

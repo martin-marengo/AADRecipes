@@ -1,7 +1,6 @@
 package com.mmarengo.android.recipes.ui
 
 import android.os.Bundle
-import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,7 +15,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_Recipes)
         super.onCreate(savedInstanceState)
-        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+        //window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

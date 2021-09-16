@@ -51,6 +51,13 @@ class HomeViewModel(
         searchRandomRecipe()
     }
 
+    // TODO: delete dummy method.
+    fun runSurpriseQuery() {
+        currentQuery.value?.let {
+            if (it.isNotBlank()) search("sardine")
+        }
+    }
+
     fun search(query: String) {
         if (query != _currentQuery.value) {
             _currentQuery.value = query
